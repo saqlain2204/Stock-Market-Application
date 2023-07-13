@@ -10,7 +10,7 @@ import plotly.express as px
 st.markdown("# Welcome to our financial DashBoard.\n ###### This application is currently in its Beta version/testing period.")
 
 with st.sidebar:
-    company = st.sidebar.text_input("Enter the ticker:")
+    company = st.sidebar.text_input("Enter the ticker (eg: msft for Microsoft, reliance.ns for Reliance NSE)")
 
     choice = st.sidebar.selectbox("Select your choice",("Enter Period","Enter Date"))
 
@@ -30,6 +30,21 @@ with st.sidebar:
 
 try:
     ticker = yf.download(company, start=start_date, end=end_date,  interval=interval, period=period)
+    
+    High_col, low_col = st.columns(2, gap="medium")
+
+    with High_col:
+        st.title(f"Highest in Period: {period}")
+        High=ticker["High"].max()
+        st.markdown(f"##### {High}")
+
+    with low_col:
+        st.title(f"lowest in Period: {period}")
+        Low=ticker["Low"].min()
+        st.markdown(f"##### {Low}")
+
+
+
     st.dataframe(ticker, use_container_width=True)
 
     var= st.selectbox("Select the dependent variable",("Open","High","Low","Adj Close","Volume"))
