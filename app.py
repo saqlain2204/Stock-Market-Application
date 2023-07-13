@@ -51,6 +51,6 @@ try:
     st.plotly_chart(px.line(data_frame=ticker, y=ticker[var]), use_container_width=True)
 
 except:
-    st.warning("Enter a valid ticker name")
+    st.warning("Enter a valid ticker name in the sidebar to generate Data")
 
 
