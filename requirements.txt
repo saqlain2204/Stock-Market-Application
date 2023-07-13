@@ -4,3 +4,4 @@ streamlit
 yfinance
 pandas_datareader
 datetime
+plotly.express
