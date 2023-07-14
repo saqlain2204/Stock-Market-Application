@@ -5,3 +5,4 @@ yfinance
 pandas_datareader
 datetime
 plotly.express
+trubrics[streamlit]
