@@ -48,22 +48,29 @@ def main_page(company, start_date, end_date, interval, period, stock):
         High_col, low_col = st.columns(2, gap="medium")
 
         with High_col:                                                      ## A column which contains the highest price of the stock in the given period
-            st.title(f"Highest in Period: {period}")
+            st.title(f"Highest")
             High=ticker["High"].max()
             st.markdown(f"##### {High}")
 
         with low_col:                                                       ## A columns which contains the lowest price of the stock in the given period
-            st.title(f"lowest in Period: {period}")
+            st.title(f"Lowest")
             Low=ticker["Low"].min()
             st.markdown(f"##### {Low}")
 
         ## Displaying DataFrame
         st.dataframe(ticker, use_container_width=True)
 
-        ## Graphs:
-        var= st.selectbox("Select the dependent variable",("Open","High","Low","Adj Close","Volume"))
-        st.plotly_chart(px.line(data_frame=ticker, y=ticker[var]), use_container_width=True)
+        graph, balance_sheet = st.tabs(["Statistics", "Balance sheet"])
 
+        with graph:
+            ## Graphs:
+            var= st.selectbox("Select the dependent variable",("Open","High","Low","Adj Close","Volume"))
+            st.plotly_chart(px.line(data_frame=ticker, y=ticker[var]), use_container_width=True)
+
+        with balance_sheet:
+            ## Balance Sheet
+            st.dataframe(stock.balance_sheet, use_container_width=True)
+ 
     except:
         st.warning("Enter a valid ticker name in the sidebar to generate Data")     ## Throws warning if any error pops up
 
@@ -74,7 +81,6 @@ def main():
     ## Objects:
     
     
-
 
 if __name__=="__main__":
     main()
