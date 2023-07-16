@@ -60,7 +60,7 @@ def main_page(company, start_date, end_date, interval, period, stock):
         ## Displaying DataFrame
         st.dataframe(ticker, use_container_width=True)
 
-        graph, balance_sheet = st.tabs(["Statistics", "Balance sheet"])
+        graph, balance_sheet, news = st.tabs(["Statistics", "Balance sheet","News"])
 
         with graph:
             ## Graphs:
@@ -70,6 +70,13 @@ def main_page(company, start_date, end_date, interval, period, stock):
         with balance_sheet:
             ## Balance Sheet
             st.dataframe(stock.balance_sheet, use_container_width=True)
+
+        with news:
+            for i in range(5):
+                new=stock.news[i]['title']
+                link=stock.news[i]['link']
+                st.write(f"{new}: \n {link}")
+
  
     except:
         st.warning("Enter a valid ticker name in the sidebar to generate Data")     ## Throws warning if any error pops up
