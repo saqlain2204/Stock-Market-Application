@@ -5,6 +5,7 @@ import yfinance as yf
 from pandas_datareader import data as pdr
 from datetime import date
 import plotly.express as px
+from PIL import Image
 
 hide_st_style = """
             <style>
@@ -17,8 +18,13 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 
 ### Sidebar:
-with st.sidebar:
-    def sidebar_access():
+
+def sidebar_access():
+    with st.sidebar:
+        ## HTML to insert image
+        image = Image.open('logo.png')
+        st.image(image)
+
         ## User eneters the ticker Symbol
         company = st.sidebar.text_input("Enter the ticker (eg: msft for Microsoft, reliance.ns for Reliance NSE)")
 
@@ -48,6 +54,13 @@ with st.sidebar:
 
         return company, start_date, end_date, interval, period, stock
 ## Main Screen
+
+## Image in main Screen
+### Using Columns to align image in the centre
+left_co, cent_co,last_co = st.columns(3)
+with cent_co:
+    st.image('logo.png')
+
 st.markdown("# Welcome to our financial DashBoard.\n ###### This application is currently in its Beta version/testing period.")
 
 ## Main page function
