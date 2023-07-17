@@ -6,6 +6,15 @@ from pandas_datareader import data as pdr
 from datetime import date
 import plotly.express as px
 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 
 ### Sidebar:
 with st.sidebar:
@@ -18,7 +27,8 @@ with st.sidebar:
         ## User gets the choice of selecting the input format of data
         choice = st.sidebar.selectbox("Select your choice",("Enter Period","Enter Date"))
 
-        if choice is "Enter Date":                                              ## If the selected format is date, then period is intitalised to None
+        ## If the selected format is date, then period is intitalised to None
+        if choice is "Enter Date":                                              
             start_date = str(st.sidebar.date_input("Enter the Start Date"))
             end_date = str(st.sidebar.date_input("Enter the End Date"))
 
@@ -27,7 +37,8 @@ with st.sidebar:
                 st.sidebar.error("Start Date and End Date cannot be same. Please try again")
             period=None
 
-        else:                                                                   ## If selected format is not date, startdate and enddate are initialised to None
+        ## If selected format is not date, startdate and enddate are initialised to None
+        else:
             period = st.sidebar.selectbox("Select the period format",('1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y'))
             start_date=None
             end_date=None
@@ -41,53 +52,60 @@ st.markdown("# Welcome to our financial DashBoard.\n ###### This application is 
 
 ## Main page function
 def main_page(company, start_date, end_date, interval, period, stock):
-    try:
-        ticker = yf.download(company, start=start_date, end=end_date,  interval=interval, period=period)  
+    refresh=st.button("Refresh")
+    ## Refresh data on click
+    if(refresh or not refresh):
+        try:
+            ticker = yf.download(company, start=start_date, end=end_date,  interval=interval, period=period)  
 
-        ## Columns:
-        High_col, low_col = st.columns(2, gap="medium")
+            ## Columns:
+            High_col, low_col = st.columns(2, gap="medium")
 
-        with High_col:                                                      ## A column which contains the highest price of the stock in the given period
-            st.title(f"Highest")
-            High=ticker["High"].max()
-            st.markdown(f"##### {High}")
+            ## A column which contains the highest price of the stock in the given period
+            with High_col:
+                st.title(f"Highest")
+                High=ticker["High"].max()
+                st.markdown(f"##### :green[{High}]")
 
-        with low_col:                                                       ## A columns which contains the lowest price of the stock in the given period
-            st.title(f"Lowest")
-            Low=ticker["Low"].min()
-            st.markdown(f"##### {Low}")
+            ## A columns which contains the lowest price of the stock in the given period
+            with low_col:                                                       
+                st.title(f"Lowest")
+                Low=ticker["Low"].min()
+                st.markdown(f"##### :red[{Low}]")
 
-        ## Displaying DataFrame
-        st.dataframe(ticker, use_container_width=True)
+            ## Displaying DataFrame
+            st.dataframe(ticker, use_container_width=True)
 
-        graph, balance_sheet, news = st.tabs(["Statistics", "Balance sheet","News"])
+            graph, balance_sheet, news = st.tabs(["Statistics", "Balance sheet","News"])
 
-        with graph:
-            ## Graphs:
-            var= st.selectbox("Select the dependent variable",("Open","High","Low","Adj Close","Volume"))
-            st.plotly_chart(px.line(data_frame=ticker, y=ticker[var]), use_container_width=True)
+            with graph:
+                ## Graphs:
+                var= st.selectbox("Select the dependent variable",("Open","High","Low","Adj Close","Volume"))
+                st.plotly_chart(px.line(data_frame=ticker, y=ticker[var]), use_container_width=True)
 
-        with balance_sheet:
-            ## Balance Sheet
-            st.dataframe(stock.balance_sheet, use_container_width=True)
+            with balance_sheet:
+                ## Balance Sheet
+                st.dataframe(stock.balance_sheet, use_container_width=True)
 
-        with news:
-            for i in range(5):
-                new=stock.news[i]['title']
-                link=stock.news[i]['link']
-                st.write(f"{new}: \n {link}")
+            with news:
+                for i in range(5):
+                    new=stock.news[i]['title']
+                    link=stock.news[i]['link']
+                    st.write(f"{new}: \n {link}")
 
- 
-    except:
-        st.warning("Enter a valid ticker name in the sidebar to generate Data")     ## Throws warning if any error pops up
+    
+        except:
+            ## Throws warning if any error pops up
+            st.warning("Enter a valid ticker name in the sidebar to generate Data")     
 
 def main():
 
-    company, start_date, end_date, interval, period, stock = sidebar_access()  ## Accessing all the variables in the sidebar
-    main_page(company, start_date, end_date, interval, period, stock)          ## Calling the main page function to display the dataframe and the graphs
-    ## Objects:
-    
-    
+    ## Accessing all the variables in the sidebar
+    company, start_date, end_date, interval, period, stock = sidebar_access() 
+
+    ## Calling the main page function to display the dataframe and the graphs
+    main_page(company, start_date, end_date, interval, period, stock)          
+
 
 if __name__=="__main__":
     main()
