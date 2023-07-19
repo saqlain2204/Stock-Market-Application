@@ -53,6 +53,7 @@ def sidebar_access():
         interval = st.sidebar.selectbox("Select the interval",('1m', '2m' , '5m' , '15m' , '30m' , '60m' , '90m', '1h' , '1d', '5d', '1wk', '1mo', '3mo',))
 
         return company, start_date, end_date, interval, period, stock
+
 ## Main Screen
 
 ## Image in main Screen
@@ -87,7 +88,7 @@ def main_page(company, start_date, end_date, interval, period, stock):
                 st.markdown(f"##### :red[{Low}]")
 
             ## Displaying DataFrame
-            st.dataframe(ticker, use_container_width=True)
+            st.dataframe(ticker.iloc[::-1], use_container_width=True)
 
             graph, balance_sheet, news = st.tabs(["Statistics", "Balance sheet","News"])
 
