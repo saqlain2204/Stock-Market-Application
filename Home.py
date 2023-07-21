@@ -7,6 +7,8 @@ from datetime import date
 import plotly.express as px
 from PIL import Image
 
+
+
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
