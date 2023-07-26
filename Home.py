@@ -6,6 +6,21 @@ from pandas_datareader import data as pdr
 from datetime import date
 import plotly.express as px
 from PIL import Image
+import streamlit_authenticator as stauth
+from pathlib import Path
+
+ans=None
+#--USER AUTHENTICATION
+def user_auth():
+    names=['saqlain','happy']
+    usernames=['saqlain','happy']
+    passwords=['123','1234']
+    hashed_passwords = stauth.Hasher(passwords).generate()
+    authenticator=stauth.Authenticate(names, usernames, hashed_passwords, "finance_dashboard","1234a",cookie_expiry_days=0)
+    name, authentication_status, username = authenticator.login('Login','sidebar')
+
+
+    return authentication_status, name
 
 
 
@@ -120,13 +135,21 @@ def main_page(company, start_date, end_date, interval, period, stock):
         st.warning("Enter a valid ticker name in the sidebar to generate Data")     
 
 def main():
+    ans, name=user_auth()
 
-    ## Accessing all the variables in the sidebar
-    company, start_date, end_date, interval, period, stock = sidebar_access() 
+    if ans==True:
+        ans=True
+        st.sidebar.title(f"Welcome {name}")
+        ## Accessing all the variables in the sidebar
+        company, start_date, end_date, interval, period, stock = sidebar_access() 
 
-    ## Calling the main page function to display the dataframe and the graphs
-    main_page(company, start_date, end_date, interval, period, stock)          
+        ## Calling the main page function to display the dataframe and the graphs
+        main_page(company, start_date, end_date, interval, period, stock)          
+    elif ans==None:
+        st.sidebar.warning("Enter Username/password")
 
+    else:
+        st.sidebar.error("Username/password is incorrect")
 
 if __name__=="__main__":
     main()
