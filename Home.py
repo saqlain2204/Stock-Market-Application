@@ -83,7 +83,7 @@ st.markdown("<h1 style='text-align: center; color: #7fc3f7;'>Welcome to FinTrack
 st.markdown("<p style='text-align: center;'>This application is currently in its Beta version/testing period.</p>", unsafe_allow_html=True)
 
 ## Main page function
-def main_page(company, start_date, end_date, interval, period, _stock):
+def main_page(company, start_date, end_date, interval, period, stock):
 
     try:
         ticker = yf.download(company, start=start_date, end=end_date,  interval=interval, period=period)  
