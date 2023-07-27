@@ -20,7 +20,7 @@ def user_auth():
     name, authentication_status, username = authenticator.login('Login','sidebar')
 
 
-    return authentication_status, name
+    return authentication_status, name, authenticator
 
 
 
@@ -83,7 +83,7 @@ st.markdown("<h1 style='text-align: center; color: #7fc3f7;'>Welcome to FinTrack
 st.markdown("<p style='text-align: center;'>This application is currently in its Beta version/testing period.</p>", unsafe_allow_html=True)
 
 ## Main page function
-def main_page(company, start_date, end_date, interval, period, stock):
+def main_page(company, start_date, end_date, interval, period, _stock):
 
     try:
         ticker = yf.download(company, start=start_date, end=end_date,  interval=interval, period=period)  
@@ -135,10 +135,10 @@ def main_page(company, start_date, end_date, interval, period, stock):
         st.warning("Enter a valid ticker name in the sidebar to generate Data")     
 
 def main():
-    ans, name=user_auth()
+    ans, name, authenticator=user_auth()
 
     if ans==True:
-        ans=True
+        authenticator.logout('Log Out','sidebar')
         st.sidebar.title(f"Welcome {name}")
         ## Accessing all the variables in the sidebar
         company, start_date, end_date, interval, period, stock = sidebar_access() 
