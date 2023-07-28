@@ -9,7 +9,7 @@ from PIL import Image
 import streamlit_authenticator as stauth
 from pathlib import Path
 
-ans=None
+ 
 #--USER AUTHENTICATION
 def user_auth():
     names=['saqlain','happy']
@@ -93,15 +93,17 @@ def main_page(company, start_date, end_date, interval, period, stock):
 
         ## A column which contains the highest price of the stock in the given period
         with High_col:
-            st.title(f"Highest")
             High=ticker["High"].max()
-            st.markdown(f"##### :green[{High}]")
+            High_time = ticker["High"].idxmax()
+            st.title(f"Highest")
+            st.markdown(f"##### :green[{High}] \n :green[Time: {High_time}]")
 
         ## A columns which contains the lowest price of the stock in the given period
-        with low_col:                                                       
-            st.title(f"Lowest")
+        with low_col:
             Low=ticker["Low"].min()
-            st.markdown(f"##### :red[{Low}]")
+            Low_time = ticker["High"].idxmin()                                                       
+            st.title(f"Lowest")
+            st.markdown(f"##### :red[{Low}] \n :red[Time: {Low_time}]")
 
         ## Refresh Button
         with button_col:
@@ -113,12 +115,20 @@ def main_page(company, start_date, end_date, interval, period, stock):
         ## Displaying DataFrame
         st.dataframe(ticker.iloc[::-1], use_container_width=True)
 
-        graph, balance_sheet, news = st.tabs(["Statistics", "Balance sheet","News"])
+        graph, share_holders , balance_sheet, news = st.tabs(["Statistics","Share Holders", "Balance sheet","News"])
 
         with graph:
             ## Graphs:
             var= st.selectbox("Select the dependent variable",("Open","High","Low","Adj Close","Volume"))
             st.plotly_chart(px.line(data_frame=ticker, y=ticker[var]), use_container_width=True)
+
+        with share_holders:
+           stock.major_holders['Percentage share']=stock.major_holders[0]
+           del stock.major_holders[0]
+           stock.major_holders['Description']=stock.major_holders[1]
+           del stock.major_holders[1]
+           stock.major_holders
+
 
         with balance_sheet:
             ## Balance Sheet
@@ -139,7 +149,7 @@ def main():
 
     if ans==True:
         authenticator.logout('Log Out','sidebar')
-        st.sidebar.title(f"Welcome {name}")
+        st.sidebar.title(f"Welcome :blue[{name.upper()}]😀")
         ## Accessing all the variables in the sidebar
         company, start_date, end_date, interval, period, stock = sidebar_access() 
 
