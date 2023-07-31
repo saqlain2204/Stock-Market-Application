@@ -1,6 +1,6 @@
 import streamlit as st
 import yfinance as yf
-from datetime import date
+import datetime
 from dateutil.relativedelta import relativedelta
 import warnings
 warnings.filterwarnings("ignore")

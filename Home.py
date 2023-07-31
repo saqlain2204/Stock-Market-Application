@@ -2,12 +2,10 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-from pandas_datareader import data as pdr
-from datetime import date
+import datetime
 import plotly.express as px
 from PIL import Image
 import streamlit_authenticator as stauth
-from pathlib import Path
 
  
 #--USER AUTHENTICATION
