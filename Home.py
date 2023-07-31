@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-import datetime
 import plotly.express as px
 from PIL import Image
 import streamlit_authenticator as stauth
