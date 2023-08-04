@@ -77,7 +77,7 @@ with cent_co:
     st.image('logo.png')
 
 st.markdown("<h1 style='text-align: center; color: #7fc3f7;'>Welcome to FinTrack</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>This application is currently in its Beta version/testing period.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>This application is currently in its :blue[Beta] version.</p>", unsafe_allow_html=True)
 
 ## Main page function
 def main_page(company, start_date, end_date, interval, period, stock):
