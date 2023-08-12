@@ -1,17 +1,19 @@
-import numpy as np
-import pandas as pd
 import streamlit as st
 import yfinance as yf
 import plotly.express as px
 from PIL import Image
 import streamlit_authenticator as stauth
+import os
+from dotenv import load_dotenv
 
  
 #--USER AUTHENTICATION
 def user_auth():
-    names=['saqlain','happy']
-    usernames=['saqlain','happy']
-    passwords=['123','1234']
+    load_dotenv('.env')
+    names = os.getenv('names').split(",")
+    usernames = os.getenv('usernames').split(",")
+    passwords = os.getenv('passwords').split(",")
+
     hashed_passwords = stauth.Hasher(passwords).generate()
     authenticator=stauth.Authenticate(names, usernames, hashed_passwords, "finance_dashboard","1234a",cookie_expiry_days=0)
     name, authentication_status, username = authenticator.login('Login','sidebar')
