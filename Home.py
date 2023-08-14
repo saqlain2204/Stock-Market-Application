@@ -37,7 +37,6 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 def sidebar_access():
     with st.sidebar:
-        ## HTML to insert image
         image = Image.open('logo.png')
         st.image(image)
 
