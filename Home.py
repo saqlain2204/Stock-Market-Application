@@ -83,7 +83,7 @@ st.write(f"<p style='text-align: center;'>This application is currently in its B
 ## Main page function
 def main_page(company, start_date, end_date, interval, period, stock):
 
-    try:
+    if company is not None:
         ticker = yf.download(company, start=start_date, end=end_date,  interval=interval, period=period)  
 
         ## Columns:
@@ -138,7 +138,7 @@ def main_page(company, start_date, end_date, interval, period, stock):
                 link=stock.news[i]['link']
                 st.write(f"{new}: \n {link}")
 
-    except:
+    else:
         ## Throws warning if any error pops up
         st.warning("Enter a valid ticker name in the sidebar to generate Data")     
 
