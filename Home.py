@@ -138,7 +138,7 @@ def main_page(company, start_date, end_date, interval, period, stock):
                 link=stock.news[i]['link']
                 st.write(f"{new}: \n {link}")
 
-    except
+    except:
         ## Throws warning if any error pops up
         pass   
 
